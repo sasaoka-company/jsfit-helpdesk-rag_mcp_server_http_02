@@ -1,5 +1,10 @@
 from fastmcp import FastMCP
 import rag_core
+from config import (
+    SERVER_PORT,
+    TOOL_NAME,
+    TOOL_DESCRIPTION,
+)
 
 from logger import get_logger
 
@@ -13,8 +18,8 @@ logger.info("FastMCPサーバーオブジェクト（Streamable HTTP）が作成
 
 
 @mcp.tool(
-    name="search_work_rules",
-    description="就業規則.docxドキュメントから質問に関連する情報を検索します。",
+    name=TOOL_NAME,
+    description=TOOL_DESCRIPTION,
 )
 def search_work_rules(prompt: str) -> str:
     logger.info(f"[1] 検索クエリ: {prompt}")
@@ -28,5 +33,6 @@ def search_work_rules(prompt: str) -> str:
 
 if __name__ == "__main__":
     logger.info("--- __main__を介してFastMCPサーバーを開始 ---")
-    # サーバーを起動します（ポート8001でリッスンします）
-    mcp.run(transport="streamable-http", port=8001)
+    # サーバーを起動します
+    logger.info(f"サーバーをポート{SERVER_PORT}で起動します")
+    mcp.run(transport="streamable-http", port=SERVER_PORT)

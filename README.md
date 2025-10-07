@@ -65,8 +65,8 @@ API サーバーを起動してください（詳細は省略）。
 まず MCP サーバーを起動します：
 
 ```powershell
-# サーバー起動（ポート8001でリッスン）
-uv run python rag_mcp_server_http.py
+# サーバー起動
+uv run python rag_mcp_server_http_02.py
 ```
 
 ### 2. MCP クライアントからの利用
@@ -82,7 +82,7 @@ uv run python rag_mcp_server_http.py
   "mcpServers": {
     "work-rules-http": {
       "transport": "streamable-http",
-      "url": "http://127.0.0.1:8001/mcp"
+      "url": "http://127.0.0.1:8002/mcp"
     }
   }
 }
@@ -90,14 +90,14 @@ uv run python rag_mcp_server_http.py
 
 **その他の MCP クライアントから利用する場合：**
 
-- サーバー URL: `http://127.0.0.1:8001/mcp`
+- サーバー URL: `http://127.0.0.1:8002/mcp`
 - トランスポート: `streamable-http`
-- 利用可能ツール: `search_work_rules`
+- 利用可能ツール: `search_work_rules_02`
 
 ### 3. 利用方法
 
 - **HTTP 方式**: サーバーが起動している間、任意の MCP クライアントから HTTP リクエストでアクセス可能
-- **サーバー URL**: `http://127.0.0.1:8001/mcp`
+- **サーバー URL**: `http://127.0.0.1:8002/mcp`
 - **利用可能ツール**: `search_work_rules`（就業規則ドキュメントの検索）
 
 ## 開発セットアップ
@@ -114,7 +114,7 @@ uv run python rag_mcp_server_http.py
 
 ```powershell
 # プロジェクトルートへ移動
-cd D:\vscode_projects\sample_rag_mcp_server_http
+cd D:\github_projects\jsfit-helpdesk-rag_mcp_server_http_02
 
 # uvを使用して依存関係をインストール
 uv sync
@@ -129,19 +129,4 @@ uv sync
 ```powershell
 # uvを使用してテストを実行
 uv run pytest tests/ -v
-```
-
-## ファイル構成
-
-```
-sample_rag_mcp_server_http/
-├── rag_mcp_server_http.py    # メインサーバーファイル
-├── rag_core.py               # RAG検索ロジック
-├── logger.py                 # ログ設定
-├── pyproject.toml            # プロジェクト設定・依存関係
-├── uv.lock                   # 依存関係ロックファイル
-├── docs/                     # ドキュメント格納
-│   └── 就業規則.docx
-├── faiss_db/                 # FAISS検索インデックス
-└── tests/                    # テストファイル
 ```
