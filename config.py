@@ -27,7 +27,7 @@ CHUNK_OVERLAP = 100
 # ========================================
 # 検索時に取得する類似ドキュメントの最大数
 # ※この値は rag_core.py の TOP_K として使用されている
-DEFAULT_TOP_K = 3
+DEFAULT_TOP_K = 24
 
 
 # ========================================
@@ -41,7 +41,7 @@ SERVER_PORT = 8002
 # MCPツール設定
 # ========================================
 # 就業規則検索ツールの名前
-TOOL_NAME = "search_work_rules_02"
+TOOL_NAME = "search_temperature"
 
 # 就業規則検索ツールの説明文
-TOOL_DESCRIPTION = "就業規則.docxドキュメントから質問に関連する情報を検索します。"
+TOOL_DESCRIPTION = "新潟市の気温.docxドキュメントから質問に関連する情報を検索します。"

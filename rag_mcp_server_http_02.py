@@ -12,7 +12,7 @@ from logger import get_logger
 logger = get_logger(__name__)
 
 # サーバーをインスタンス化し、名前を付けます
-mcp = FastMCP(name="work-rules-http")
+mcp = FastMCP(name="temperature-http")
 
 logger.info("FastMCPサーバーオブジェクト（Streamable HTTP）が作成されました。")
 
@@ -21,7 +21,7 @@ logger.info("FastMCPサーバーオブジェクト（Streamable HTTP）が作成
     name=TOOL_NAME,
     description=TOOL_DESCRIPTION,
 )
-def search_work_rules(prompt: str) -> str:
+def search_temperature(prompt: str) -> str:
     logger.info(f"[1] 検索クエリ: {prompt}")
 
     results: list[str] = rag_core.search(prompt)
