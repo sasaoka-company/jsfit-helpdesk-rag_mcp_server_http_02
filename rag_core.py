@@ -8,7 +8,7 @@ from langchain_community.document_loaders import UnstructuredWordDocumentLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_ollama import OllamaEmbeddings
 from langchain_community.vectorstores import FAISS
-from config import EMBEDDING_MODEL, CHUNK_SIZE, CHUNK_OVERLAP
+from config import EMBEDDING_MODEL, CHUNK_SIZE, CHUNK_OVERLAP, DEFAULT_TOP_K
 from logger import get_logger
 
 # ロガー設定
@@ -67,9 +67,6 @@ else:
     vectorstore = FAISS.from_documents(docs, embeddings)
     vectorstore.save_local(faiss_path)
 
-# top_k を固定
-TOP_K = 3
-
 
 # 検索+回答関数
 def search(prompt: str) -> list[str]:
@@ -79,7 +76,7 @@ def search(prompt: str) -> list[str]:
     logger.info(f"① 検索クエリ: {prompt}")
 
     # FAISS に直接問い合わせ
-    docs = vectorstore.similarity_search(prompt, k=TOP_K)
+    docs = vectorstore.similarity_search(prompt, k=DEFAULT_TOP_K)
     logger.info(f"② 取得ドキュメント: {docs}")
 
     # 検索結果をテキストとして抽出

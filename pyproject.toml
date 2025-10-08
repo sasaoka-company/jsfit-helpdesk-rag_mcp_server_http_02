@@ -22,3 +22,8 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 exclude = ["faiss_db", "faiss_db.*", "log", "log.*", "docs", "tests", "examples"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+]
