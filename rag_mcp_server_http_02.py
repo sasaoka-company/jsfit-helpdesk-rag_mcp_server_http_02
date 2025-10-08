@@ -12,7 +12,7 @@ from logger import get_logger
 logger = get_logger(__name__)
 
 # サーバーをインスタンス化し、名前を付けます
-mcp = FastMCP(name="temperature-http")
+mcp = FastMCP(name="mcp-server-http-02")
 
 logger.info("FastMCPサーバーオブジェクト（Streamable HTTP）が作成されました。")
 

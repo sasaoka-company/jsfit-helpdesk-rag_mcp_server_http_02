@@ -1,5 +1,5 @@
 [project]
-name = "sample-rag-mcp-server-http"
+name = "mcp-server-http-02"
 version = "0.2.0"
 description = "RAG MCP Server with Ollama embedding support"
 readme = "README.md"
