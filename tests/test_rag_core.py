@@ -1,14 +1,13 @@
 import os
 import sys
-import pytest
 
 # ensure project root is on sys.path
 ROOT = os.path.dirname(os.path.dirname(__file__))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from rag_core import search
-from config import DEFAULT_TOP_K, EMBEDDING_MODEL, CHUNK_SIZE, CHUNK_OVERLAP
+from src.rag_core import search
+from src.config import DEFAULT_TOP_K, EMBEDDING_MODEL, CHUNK_SIZE, CHUNK_OVERLAP
 
 
 def test_search_returns_list_and_max_top_k():
@@ -58,7 +57,7 @@ def test_search_returns_non_empty_strings():
 
 def test_vectorstore_initialization():
     """Test that the vectorstore and related components can be imported without errors."""
-    from rag_core import vectorstore, embeddings, docs
+    from src.rag_core import vectorstore, embeddings, docs
 
     # Basic checks to ensure components are initialized
     assert vectorstore is not None

@@ -1,9 +1,9 @@
 import logging
 import logging.handlers
 import os
+from src.config import ROOT_DIR
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # このファイルのある場所
-LOG_DIR = os.path.join(BASE_DIR, "log")
+LOG_DIR = os.path.join(ROOT_DIR, "log")
 
 # 日付ベースのログファイル名（ローテーション用）
 LOG_FILE = os.path.join(LOG_DIR, "app.log")

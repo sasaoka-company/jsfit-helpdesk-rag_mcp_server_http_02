@@ -1,6 +1,6 @@
 from fastmcp import FastMCP
-import rag_core
-from config import (
+from src.rag_core import search
+from src.config import (
     SERVER_PORT,
     TOOL_NAME,
     TOOL_DESCRIPTION,
@@ -24,7 +24,7 @@ logger.info("FastMCPサーバーオブジェクト（Streamable HTTP）が作成
 def search_temperature(prompt: str) -> str:
     logger.info(f"[1] 検索クエリ: {prompt}")
 
-    results: list[str] = rag_core.search(prompt)
+    results: list[str] = search(prompt)
 
     logger.info(f"[2] 検索結果: {results}")
 

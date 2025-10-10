@@ -19,7 +19,7 @@ HTTP 通信を通じて MCP クライアントとの通信を行います。
 # 3. MCP クライアントからの接続
 
 - コマンド: `（プロジェクトルート）\.venv\Scripts\python.exe`
-- 実行スクリプト: `rag_mcp_server_http_02.py`
+- 実行スクリプト: `src\rag_mcp_server_http_02.py`
 - トランスポート: `streamable-http`
 
 ## （参考）Claude Desktop から利用する場合の設定例：
@@ -58,7 +58,7 @@ uv sync
 # 5. MCP サーバ起動
 
 ```powershell
-uv run python rag_mcp_server_http_02.py
+$env:PYTHONPATH = "." ; uv run python src/rag_mcp_server_http_02.py
 ```
 
 ※ 標準入出力方式の場合は明示的な MCP サーバの起動は不要ですが、Streamable HTTP 方式の MCP サーバは起動する必要があります。

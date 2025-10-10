@@ -8,8 +8,14 @@ from langchain_community.document_loaders import UnstructuredWordDocumentLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_ollama import OllamaEmbeddings
 from langchain_community.vectorstores import FAISS
-from config import EMBEDDING_MODEL, CHUNK_SIZE, CHUNK_OVERLAP, DEFAULT_TOP_K
-from logger import get_logger
+from src.config import (
+    ROOT_DIR,
+    EMBEDDING_MODEL,
+    CHUNK_SIZE,
+    CHUNK_OVERLAP,
+    DEFAULT_TOP_K,
+)
+from src.logger import get_logger
 
 # ロガー設定
 logger = get_logger(__name__)
@@ -17,14 +23,11 @@ logger = get_logger(__name__)
 # 環境変数ロード
 load_dotenv()
 
-# ベースディレクトリ設定
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
 # Embedding モデル（Ollamaを使用）
 embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
 
 # PDF読み込み & DOCX対応 & チャンク化
-pdf_dir = os.path.join(BASE_DIR, "docs")
+pdf_dir = os.path.join(ROOT_DIR, "docs")
 # 対象拡張子を指定
 pdf_paths = sorted(glob.glob(os.path.join(pdf_dir, "*.pdf")))
 docx_paths = sorted(glob.glob(os.path.join(pdf_dir, "*.docx")))
@@ -58,7 +61,7 @@ docs = text_splitter.split_documents(raw_docs)
 
 
 # ベクトルDB作成（FAISSを使用）
-faiss_path = os.path.join(BASE_DIR, "faiss_db")
+faiss_path = os.path.join(ROOT_DIR, "faiss_db")
 if os.path.exists(faiss_path):
     vectorstore = FAISS.load_local(
         faiss_path, embeddings, allow_dangerous_deserialization=True
