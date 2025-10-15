@@ -1,3 +1,6 @@
+import sys
+import os
+
 from fastmcp import FastMCP
 from src.rag_core import search
 from src.config import (
@@ -10,6 +13,11 @@ from logger import get_logger
 
 # ロガー設定
 logger = get_logger(__name__)
+
+logger.info("=== SERVER STARTED ===")
+logger.info("sys.executable: %s", sys.executable)
+logger.info("sys.prefix: %s", sys.prefix)
+logger.info("PATH: %s", os.environ.get("PATH"))
 
 # サーバーをインスタンス化し、名前を付けます
 mcp = FastMCP(name="mcp-server-http-02")

@@ -6,7 +6,11 @@ import glob
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.document_loaders import UnstructuredWordDocumentLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_ollama import OllamaEmbeddings
+
+from langchain_ollama import OllamaEmbeddings  # Ollama Embedding
+
+# from langchain_openai import OpenAIEmbeddings  # OpenAI Embedding
+
 from langchain_community.vectorstores import FAISS
 from src.config import (
     ROOT_DIR,
@@ -23,7 +27,8 @@ logger = get_logger(__name__)
 # 環境変数ロード
 load_dotenv()
 
-# Embedding モデル（Ollamaを使用）
+# Embedding モデル
+# embeddings = OpenAIEmbeddings(model=EMBEDDING_MODEL)
 embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
 
 # PDF読み込み & DOCX対応 & チャンク化

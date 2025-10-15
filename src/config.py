@@ -14,8 +14,8 @@ ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # ========================================
 # AI/ML モデル設定
 # ========================================
-# Ollama Embedding モデルの指定
-EMBEDDING_MODEL = "nomic-embed-text:latest"
+EMBEDDING_MODEL = "nomic-embed-text:latest"  # Ollama Embedding モデル
+# EMBEDDING_MODEL = "text-embedding-3-small"  # OpenAI Embedding モデル
 
 
 # ========================================
