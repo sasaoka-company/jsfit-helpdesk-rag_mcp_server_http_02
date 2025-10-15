@@ -68,3 +68,25 @@ $env:PYTHONPATH = "." ; uv run python src/rag_mcp_server_http_02.py
 ```powershell
 uv run pytest tests/ -v
 ```
+
+# 7. その他
+
+## 7-1. Embedding モデルを切り替える
+
+以下変更箇所のコメントアウトを切り替える。
+
+- `.env`
+  OPENAI_API_BASE
+  OPENAI_API_KEY
+
+※ Ollama を使わない場合は`OPENAI_API_BASE`定数はコメントアウトして無効にする
+
+- `config.py`
+  EMBEDDING_MODEL
+
+- `rag_core.py`
+  from langchain_ollama import OllamaEmbeddings # Ollama Embeddings
+  from langchain_openai import OpenAIEmbeddings # OpenAI Embeddings
+
+  embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
+  embeddings = OpenAIEmbeddings(model=EMBEDDING_MODEL)
