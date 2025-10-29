@@ -81,14 +81,25 @@ def search(prompt: str) -> list[str]:
     """
     ベクトルデータベースを検索します。
     """
-    logger.info(f"① 検索クエリ: {prompt}")
+    try:
+        logger.info("=== search START")
+        logger.info(f"prompt: {prompt}")
 
-    # FAISS に直接問い合わせ
-    docs = vectorstore.similarity_search(prompt, k=DEFAULT_TOP_K)
-    logger.info(f"② 取得ドキュメント: {docs}")
+        logger.info(f"① 検索クエリ: {prompt}")
 
-    # 検索結果をテキストとして抽出
-    result = [doc.page_content for doc in docs]
-    logger.info(f"③ 検索結果: {result}")
+        # FAISS に直接問い合わせ
+        docs = vectorstore.similarity_search(prompt, k=DEFAULT_TOP_K)
+        logger.info(f"② 取得ドキュメント: {docs}")
 
-    return result
+        # 検索結果をテキストとして抽出
+        result = [doc.page_content for doc in docs]
+        logger.info(f"③ 検索結果: {result}")
+
+        return result
+
+    except Exception as e:
+        logger.error(f"search エラー: {e}")
+        logger.exception(e)
+        raise
+    finally:
+        logger.info("=== search END ===")
