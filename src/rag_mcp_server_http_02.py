@@ -1,5 +1,6 @@
 import sys
 import os
+import json
 
 from fastmcp import FastMCP
 from src.rag_core import search
@@ -36,7 +37,21 @@ def search_temperature(prompt: str) -> str:
 
     logger.info(f"[2] 検索結果: {results}")
 
-    return "\n\n".join(results)
+    # MCPではJSON-RPC 2.0で通信するため、Pythonのlistやdictをそのまま返すと
+    # JSON文字列にシリアライズする処理が **自動的に** 実行されるため、基本的に制御できない。
+    # このシリアライズ処理を制御するため、**明示的に** JSON文字列に変換して返す。
+    #
+    # JSON-RPC 2.0 レスポンス上では次のように "result" の値としてシリアライズされる:
+    # （例）
+    # {
+    #   "jsonrpc": "2.0",
+    #   "id": 12345,
+    #   "result": "[\"結果１\", \"結果２\"]"  # ← JSON文字列として格納される
+    # }
+    #
+    # 戻り値: str（JSON文字列形式の結果リスト）
+    # MCPクライアント側で json.loads(result) によりリストへ復元できる。
+    return json.dumps(results, ensure_ascii=False)
 
 
 if __name__ == "__main__":
