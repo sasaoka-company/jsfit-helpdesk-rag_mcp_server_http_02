@@ -1,15 +1,20 @@
 # rag_core.py
+import csv
 import os
 from dotenv import load_dotenv
 import glob
 
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.document_loaders import UnstructuredWordDocumentLoader
+from langchain_community.document_loaders import TextLoader
+from langchain_community.document_loaders import CSVLoader
+
+from langchain.schema import Document
+
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from langchain_ollama import OllamaEmbeddings  # Ollama Embedding
-
-# from langchain_openai import OpenAIEmbeddings  # OpenAI Embedding
+from langchain_openai import OpenAIEmbeddings  # OpenAI Embedding
 
 from langchain_community.vectorstores import FAISS
 from src.config import (
@@ -28,41 +33,68 @@ logger = get_logger(__name__)
 load_dotenv()
 
 # Embedding モデル
-# embeddings = OpenAIEmbeddings(model=EMBEDDING_MODEL)
-embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
+embeddings = OpenAIEmbeddings(model=EMBEDDING_MODEL)
+# embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
 
-# PDF読み込み & DOCX対応 & チャンク化
-pdf_dir = os.path.join(ROOT_DIR, "docs")
+# PDF、DOCX、TXT、CSV読み込み、チャンク化
+docs_dir = os.path.join(ROOT_DIR, "docs")
 # 対象拡張子を指定
-pdf_paths = sorted(glob.glob(os.path.join(pdf_dir, "*.pdf")))
-docx_paths = sorted(glob.glob(os.path.join(pdf_dir, "*.docx")))
+pdf_paths = sorted(glob.glob(os.path.join(docs_dir, "*.pdf")))
+docx_paths = sorted(glob.glob(os.path.join(docs_dir, "*.docx")))
+txt_paths = sorted(glob.glob(os.path.join(docs_dir, "*.txt")))
+csv_paths = sorted(glob.glob(os.path.join(docs_dir, "*.csv")))
 
-if not (pdf_paths or docx_paths):
-    raise FileNotFoundError(f"No PDF or DOCX files found in {pdf_dir}")
+if not (pdf_paths or docx_paths or txt_paths or csv_paths):
+    raise FileNotFoundError(f"No PDF, DOCX, TXT or CSV files found in {docs_dir}")
 
 all_raw_docs = []
 
-# PDF読み込み
+# PDF
 for path in pdf_paths:
     logger.info(f"Loading PDF: {path}")
     loader = PyPDFLoader(path)
     docs_part = loader.load()
     all_raw_docs.extend(docs_part)
 
-# DOCX読み込み（PoC: Unstructured を必須とする）
+# DOCX（PoC: Unstructured を必須とする）
 for path in docx_paths:
     logger.info(f"Loading DOCX: {path}")
     loader = UnstructuredWordDocumentLoader(path)
     docs_part = loader.load()
     all_raw_docs.extend(docs_part)
 
-raw_docs = all_raw_docs
+# TXT
+for path in txt_paths:
+    logger.info(f"Loading TXT: {path}")
+    loader = TextLoader(path, encoding="utf-8")
+    docs_part = loader.load()
+    all_raw_docs.extend(docs_part)
+
+# CSV
+for path in csv_paths:
+    logger.info(f"Loading CSV: {path}")
+    # CSVLoaderは列をテキストとしてまとめて読み込む
+    loader = CSVLoader(file_path=path, encoding="utf-8")
+    docs_part = loader.load()
+    all_raw_docs.extend(docs_part)
+    # logger.info(f"Loading CSV: {path}")
+
+    # docs_part = []
+    # with open(path, "r", encoding="utf-8") as f:
+    #     reader = csv.DictReader(f)
+    #     for row in reader:
+    #         # 各セルを " | " 区切りで結合して1つの文字列にする
+    #         text = " | ".join(str(v) for v in row.values() if v and str(v).strip())
+    #         if text.strip():
+    #             docs_part.append(Document(page_content=text, metadata={"source": path}))
+
+    # all_raw_docs.extend(docs_part)
 
 text_splitter = RecursiveCharacterTextSplitter(
     chunk_size=CHUNK_SIZE,
     chunk_overlap=CHUNK_OVERLAP,
 )
-docs = text_splitter.split_documents(raw_docs)
+docs = text_splitter.split_documents(all_raw_docs)
 
 
 # ベクトルDB作成（FAISSを使用）

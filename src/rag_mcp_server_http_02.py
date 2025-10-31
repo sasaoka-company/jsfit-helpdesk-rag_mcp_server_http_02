@@ -30,7 +30,8 @@ logger.info("FastMCPサーバーオブジェクト（Streamable HTTP）が作成
     name=TOOL_NAME,
     description=TOOL_DESCRIPTION,
 )
-def search_temperature(prompt: str) -> str:
+# def search_temperature(prompt: str) -> str:
+def search_xyz_qa(prompt: str) -> str:
     logger.info(f"[1] 検索クエリ: {prompt}")
 
     results: list[str] = search(prompt)
